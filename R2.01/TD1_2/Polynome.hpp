@@ -19,8 +19,28 @@ class Polynome {
         Polynome deriver() const;
         Polynome& operator=(const Polynome&);
         friend bool operator==(const Polynome&, const Polynome&);
-        double& operator[](const unsigned int&)const;
-        double& operator[](const unsigned int&);
+        
+        //Opérateur[] : consultation du monôme de dégre i
+        inline double& operator[](const unsigned int& i)const
+        {
+            if(i <= degre)
+                return coef[i];
+            else
+                throw runtime_error("Votre coefficient est superieur au degre du polynome");
+            
+        }
+
+        //Opérateur[] : modification du monôme de dégre i
+        inline double& operator[](const unsigned int& i)
+        {
+            if(i <= degre)
+                return coef[i];
+            else
+                throw runtime_error("Votre coefficient est superieur au degre du polynome");
+            
+        }
+        //double& operator[](const unsigned int&)const;
+        //double& operator[](const unsigned int&);
         double operator()(const double& x);    
         friend ostream& operator<<(ostream& , const Polynome&);
 

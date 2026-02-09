@@ -84,26 +84,6 @@ bool operator==(const Polynome& a, const Polynome& b)
     return true;
 }
 
-//Opérateur[] : consultation du monôme de dégre i
-double& Polynome::operator[](const unsigned int& i)const
-{
-    if(i <= degre)
-        return coef[i];
-    else
-        throw runtime_error("Votre coefficient est superieur au degre du polynome");
-    
-}
-
-//Opérateur[] : modification du monôme de dégre i
-double& Polynome::operator[](const unsigned int& i)
-{
-    if(i <= degre)
-        return coef[i];
-    else
-        throw runtime_error("Votre coefficient est superieur au degre du polynome");
-    
-}
-
 //le functeur
 double Polynome::operator()(const double& x)
 {
@@ -115,12 +95,27 @@ double Polynome::operator()(const double& x)
 
 //ecriture sur le flux
 ostream& operator<<(ostream& os, const Polynome& p)
-{
-    for(size_t i = p.degre+1; i >= 1; i--)
-        if(p.coef[i-1] != 0){
-            if(i != p.degre +1 && p.coef[i-1] > 0)
-                cout << "+";            
-            cout << p.coef[i-1];
-        }
+{  
+    bool first = true;
+    for(size_t i = p.degre+1; i >= 1; i--){
+    double c = p.coef[i-1];
+    if(c != 0){ // pour na pas afficher les monomes de coef 0
+        // Gestion des signes
+        if(c > 0 && !first) // pour ne pas afficher le + devant le premier monome
+            os << "+";
+        else if(c < 0)
+            os << "-";
+    if(abs(c) != 1 || i == 1)
+        os << abs(c);     // abs() pour la valeur absolue (on a déja afficher les signes)
+        // Gestion de la variable la variable x
+    if(i > 1)   // pour les puissances de x superieures à 1 (car on ne veut pas afficher x^1)
+            os << "x^" << i-1;
+    else if(i == 1) // pour la puissance de 1
+            os << "x";
+        first = false;  // pour changer le statut de first après le premier monome affiché
+    }
+        
+    
+    }   
     return os;
 }
