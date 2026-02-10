@@ -35,18 +35,21 @@ Polynome operator+(const Polynome& a, const Polynome& b)
     return res;
 }
 
-//Soustraction
-Polynome operator-(const Polynome& a, const Polynome& b) 
-{
-    const Polynome& big = ( a.degre >= b.degre ? a : b);
-    const Polynome& small = ( a.degre < b.degre ? a : b);
-    double* temp = new double[small.degre+1];
-    for(size_t i = 0 ; i <= small.degre; i++)
-        temp[i] = -small.coef[i];
+Polynome operator-(const Polynome& p1 , const Polynome& p2)
+{    
+    //Soustraction en addition (p1 + (-p2))
+
+    double* tmp = new double[p2.degre + 1];
+    for( size_t i= 0 ; i< p2.degre ; i++ ){
+        tmp[i] = -1 *(p2.coef[i]);
+    }
+    Polynome p(p2.degre , tmp);
+    delete [] tmp;
+    const Polynome& big = ( p1.degre >= p.degre ? p1 : p);
+    const Polynome& small = ( p1.degre < p.degre ? p1 : p);
     Polynome res(big);
-    for(size_t i = 0 ; i <= small.degre; i++)
-        res.coef[i] += temp[i];
-    delete [] temp;
+    for(size_t i = 0; i<= small.degre; i++)
+        res.coef[i] += small.coef[i];
     return res;
 }
 
@@ -68,6 +71,7 @@ Polynome& Polynome::operator=(const Polynome& p)
 {
     delete [] coef;
     degre = p.degre;
+    coef = new double[degre + 1];
     for(size_t i = 0; i <= degre; i++)
         coef[i] = p.coef[i];
     return *this;
@@ -101,20 +105,23 @@ ostream& operator<<(ostream& os, const Polynome& p)
     double c = p.coef[i-1];
     if(c != 0){ // pour na pas afficher les monomes de coef 0
         // Gestion des signes
-        if(c > 0 && !first) // pour ne pas afficher le + devant le premier monome
-            os << "+";
-        else if(c < 0)
-            os << "-";
-    if(abs(c) != 1 || i == 1)
-        os << abs(c);     // abs() pour la valeur absolue (on a déja afficher les signes)
-        // Gestion de la variable la variable x
-    if(i > 1)   // pour les puissances de x superieures à 1 (car on ne veut pas afficher x^1)
-            os << "x^" << i-1;
-    else if(i == 1) // pour la puissance de 1
-            os << "x";
-        first = false;  // pour changer le statut de first après le premier monome affiché
+        if(!first){
+            if(c > 0)
+                os << "+";
+            else
+                os << "-";
+        }       
+        if(abs(c) != 1 || i == 1) // pour ne pas afficher le coef 1 (sauf pour le terme constant)
+            os << abs(c);     // abs() pour la valeur absolue (on a déja afficher les signes)
+            // Gestion de la variable la variable x
+        if(i > 1)   // pour les puissances de x superieures à 1 (car on ne veut pas afficher x^1)
+                os << "x^" << i-1;
+        else if(i == 1) // pour la puissance de 1
+                os << "x";
+            first = false;  // pour changer le statut de first après le premier monome affiché
     }
-        
+    else if(first && c == 0 && i == 1) // polynome nul
+        os << "0";   
     
     }   
     return os;
