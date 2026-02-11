@@ -10,19 +10,21 @@ int main()
     for (size_t i = 0; i < sizeMax; i++)
         memory[i] = nullptr;
 
-    // Etat des emplacements et affichage
+    // double coeffs2[3] = {-4,5,2};
+    // memory[2] = new Polynome(2, coeffs2);
+    // Etat des emplacements et affichage==========================================
     int choice = -1;
     cout << "===PROGRAMME DES POLYNOMES===" << endl;
-    cout << "------Etat des emplacements------" << endl;
+    cout << "------Etat des emplacements------" << endl;    
     while (choice != 0)
-    {
+    {   // BOUCLE D'AFFICHAGE=======================================================
         for (size_t i = 0; i < sizeMax; i++)
         {
-            cout << "Emplacement[" << i << "] : " ;
+            cout << "Emplacement[" << i+1 << "] : " ;
             if (memory[i] == nullptr)
                 cout << "vide" << endl;
             else
-                cout << *memory << endl;
+                cout << *(memory[i]) << endl;
         }
 
         cout << "\n Quelle action voullez-vous faire ?" << endl;
@@ -50,23 +52,24 @@ int main()
             cout << "Saisie des coefficients du polynome : " << endl;
             for (size_t i = 0; i <= degree; i++)
             {
-                cout << "Coefficient de x^" << i+1 << " : " << endl;
+                cout << "Coefficient de x^" << i << " : " << endl;
                 cin >> coeff[i];
             }
             do
             {
-                if (indice >= sizeMax)
+                if (indice > sizeMax || indice < 1)
                 {
                     cout << "Indice hors limites, veuillez ressaisir : " << endl;
                     cin >> indice;
                 }
                 else
                 {
-                    if (memory[indice] != nullptr)      //Ecraser si il y a des données existantes
-                        delete memory[indice];
-                    memory[indice] = new Polynome(degree, coeff);
+                    if (memory[indice-1] != nullptr)      //Ecraser si il y a des données existantes
+                        delete memory[indice-1];
+                    
+                    memory[indice-1] = new Polynome(degree, coeff);
                 }
-            } while (indice >= sizeMax);
+            } while (indice > sizeMax || indice < 1);
 
             delete[] coeff;
         }
@@ -81,12 +84,12 @@ int main()
             cout << "Saisir l'indice de l'emplacement de resultat : " << endl;
             cin >> indiceRes;
 
-            if(memory[indice1] != nullptr && memory[indice2] != nullptr && indiceRes < sizeMax){           
-                Polynome somme = *memory[indice1] + *memory[indice2];
+            if(memory[indice1-1] != nullptr && memory[indice2-1] != nullptr && indiceRes < sizeMax){           
+                Polynome somme = *memory[indice1-1] + *memory[indice2-1];
                 //Ecraser si il y a des données existantes
-                if(memory[indiceRes] != nullptr)
-                    delete memory[indiceRes];
-                memory[indiceRes] = new Polynome(somme);
+                if(memory[indiceRes-1] != nullptr)
+                    delete memory[indiceRes-1];
+                memory[indiceRes-1] = new Polynome(somme);
             }
         } 
         // Reste à faire choix 3 ... 
