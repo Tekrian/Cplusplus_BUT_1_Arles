@@ -67,7 +67,7 @@ int main()
                     if (memory[indice-1] != nullptr)      //Ecraser si il y a des données existantes
                         delete memory[indice-1];
                     
-                    memory[indice-1] = new Polynome(degree, coeff);
+                    (memory[indice-1]) = new Polynome(degree, coeff);
                 }
             } while (indice > sizeMax || indice < 1);
 

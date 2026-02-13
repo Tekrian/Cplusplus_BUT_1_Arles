@@ -120,7 +120,7 @@ ostream& operator<<(ostream& os, const Polynome& p)
                 os << "x";
             first = false;  // pour changer le statut de first après le premier monome affiché
     }
-    else if(first && c == 0 && i == 1) // polynome nul
+    else if(first /*&& c == 0 */&& i == 1) // polynome nul
         os << "0";   
     
     }   
