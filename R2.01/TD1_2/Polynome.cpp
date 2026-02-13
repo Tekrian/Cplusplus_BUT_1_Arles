@@ -105,18 +105,17 @@ ostream& operator<<(ostream& os, const Polynome& p)
     double c = p.coef[i-1];
     if(c != 0){ // pour na pas afficher les monomes de coef 0
         // Gestion des signes
-        if(!first){
-            if(c > 0)
-                os << "+";
-            else
+        if(!first && c > 0)
+            os << "+";
+            else if (c <0)
                 os << "-";
-        }       
+
         if(abs(c) != 1 || i == 1) // pour ne pas afficher le coef 1 (sauf pour le terme constant)
             os << abs(c);     // abs() pour la valeur absolue (on a déja afficher les signes)
             // Gestion de la variable la variable x
-        if(i > 1)   // pour les puissances de x superieures à 1 (car on ne veut pas afficher x^1)
+        if(i > 2)   // pour les puissances de x superieures à 1 (car on ne veut pas afficher x^1)
                 os << "x^" << i-1;
-        else if(i == 1) // pour la puissance de 1
+        else if(i == 2) // pour la puissance de 1
                 os << "x";
             first = false;  // pour changer le statut de first après le premier monome affiché
     }
