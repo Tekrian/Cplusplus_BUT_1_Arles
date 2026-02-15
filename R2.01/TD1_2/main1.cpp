@@ -20,7 +20,7 @@ int main()
     {   // BOUCLE D'AFFICHAGE=======================================================
         for (size_t i = 0; i < sizeMax; i++)
         {
-            cout << "Emplacement[" << i+1 << "] : " ;
+            cout << "Emplacement[" << i << "] : " ;
             if (memory[i] == nullptr)
                 cout << "vide" << endl;
             else
@@ -38,65 +38,105 @@ int main()
         cout << "7. Comparaison" << endl;
         cout << "8. ..." << endl;       */
         cout << "0. Quitter" << endl;
-        cout << "Votre choix : " << endl;
+        cout << endl;
+        cout << "Votre choix : ";
         cin >> choice;
-
+        cout << endl;
+       
         if (choice == 1)
         {
+            cout << "===Saisie du polynome=== "<<endl;
+            cout << endl;
             unsigned int indice, degree;
-            cout << "Saisir l'indice de l'emplacement : " << endl;
+            cout << "Saisir l'indice de l'emplacement : ";
             cin >> indice;
-            cout << "Saisir le degre du polynome : " << endl;
+            cout << "Saisir le degre du polynome : ";
             cin >> degree;
             double *coeff = new double[degree + 1];
-            cout << "Saisie des coefficients du polynome : " << endl;
+            cout << "Saisie des coefficients du polynome : ";
+            cout << endl;
             for (size_t i = 0; i <= degree; i++)
             {
-                cout << "Coefficient de x^" << i << " : " << endl;
+                cout << "Coefficient de x^" << i << " : ";
                 cin >> coeff[i];
             }
             do
             {
-                if (indice > sizeMax || indice < 1)
+                if (indice >= sizeMax || indice < 0)
                 {
                     cout << "Indice hors limites, veuillez ressaisir : " << endl;
                     cin >> indice;
                 }
                 else
                 {
-                    if (memory[indice-1] != nullptr)      //Ecraser si il y a des données existantes
-                        delete memory[indice-1];
+                    if (memory[indice] != nullptr)      //Ecraser si il y a des données existantes
+                        delete memory[indice];
                     
-                    (memory[indice-1]) = new Polynome(degree, coeff);
+                    (memory[indice]) = new Polynome(degree, coeff);
                 }
-            } while (indice > sizeMax || indice < 1);
+            } while (indice >= sizeMax || indice < 0);
 
             delete[] coeff;
         }
 
         else if (choice == 2)
         {
+            cout << "===ADDITION=== "<<endl;
+            cout << endl;
             unsigned int indice1, indice2, indiceRes;
-            cout << "Saisir l'indice de polynome 1 : " << endl;
+            cout << "Saisir l'indice du premier polynome : ";
             cin >> indice1;
-            cout << "Saisir l'indice de polynome 2 : " << endl;
+            cout << "Saisir l'indice du second polynome : ";
             cin >> indice2;
-            cout << "Saisir l'indice de l'emplacement de resultat : " << endl;
+            cout << "Saisir l'indice de l'emplacement du resultat : " << endl;
             cin >> indiceRes;
 
-            if(memory[indice1-1] != nullptr && memory[indice2-1] != nullptr && indiceRes < sizeMax){           
-                Polynome somme = *memory[indice1-1] + *memory[indice2-1];
+            if(memory[indice1] != nullptr && memory[indice2] != nullptr && indiceRes < sizeMax){           
+                Polynome somme = *(memory[indice1]) + *(memory[indice2]);
                 //Ecraser si il y a des données existantes
-                if(memory[indiceRes-1] != nullptr)
-                    delete memory[indiceRes-1];
-                memory[indiceRes-1] = new Polynome(somme);
+                if(memory[indiceRes] != nullptr)
+                    delete memory[indiceRes];
+                memory[indiceRes] = new Polynome(somme);
             }
-        } 
-        // Reste à faire choix 3 ... 
+        }
+        
+        else if( choice == 3) {
+            cout << "===SOUSTRACTION=== "<<endl;
+            cout << endl;
+            unsigned int indice1, indice2, indiceRes;
+            cout << "Saisir l'indice du premier polynome : ";
+            cin >> indice1;
+            cout << "Saisir l'indice du second polynome : ";
+            cin >> indice2;
+            cout << "Saisir l'indice de l'emplacement du resultat : ";
+            cin >> indiceRes;
+            cout << endl;
+
+            if(memory[indice1] != nullptr && memory[indice2] != nullptr && indiceRes < sizeMax){           
+                Polynome res = *(memory[indice1]) - *(memory[indice2]);
+                if(memory[indiceRes] != nullptr)
+                    delete memory[indiceRes];
+                memory[indiceRes] = new Polynome(res);
+            }
+        }
+
+        else if(choice == 4){
+            unsigned int indice, indiceRes;
+            cout << "Saisir l'indice de l'emplacement du polynome a deriver (entre 0 et 9) :";
+            cin >> indice;            
+            cout << "Saisir l'indice de l'emplacement du resultat : " ;
+            cin >> indiceRes;
+            cout << endl;
+
+            if(memory[indice] != nullptr){
+                (memory[indiceRes]) =  new Polynome( (memory[indice])->deriver() );
+            }
+        }
+
+        // Reste à faire choix 5 ... 
     } 
     for(size_t i = 0; i<sizeMax; i++)
         if(memory[i] != nullptr)
-            delete memory[i];  
-
+            delete memory[i];
     return 0;
 }

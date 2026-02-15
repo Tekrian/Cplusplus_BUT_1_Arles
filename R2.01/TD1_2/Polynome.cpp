@@ -40,7 +40,7 @@ Polynome operator-(const Polynome& p1 , const Polynome& p2)
     //Soustraction en addition (p1 + (-p2))
 
     double* tmp = new double[p2.degre + 1];
-    for( size_t i= 0 ; i< p2.degre ; i++ ){
+    for( size_t i= 0 ; i<= p2.degre ; i++ ){
         tmp[i] = -1 *(p2.coef[i]);
     }
     Polynome p(p2.degre , tmp);
@@ -103,23 +103,22 @@ ostream& operator<<(ostream& os, const Polynome& p)
     bool first = true;
     for(size_t i = p.degre+1; i >= 1; i--){
     double c = p.coef[i-1];
-    if(c != 0){ // pour na pas afficher les monomes de coef 0
+    if(c != 0){ 
         // Gestion des signes
         if(!first && c > 0)
             os << "+";
             else if (c <0)
                 os << "-";
-
-        if(abs(c) != 1 || i == 1) // pour ne pas afficher le coef 1 (sauf pour le terme constant)
-            os << abs(c);     // abs() pour la valeur absolue (on a déja afficher les signes)
+        if(abs(c) != 1 || i == 1)                   // pour ne pas afficher le coef 1 (sauf pour le terme constant)
+            os << abs(c);
             // Gestion de la variable la variable x
-        if(i > 2)   // pour les puissances de x superieures à 1 (car on ne veut pas afficher x^1)
+        if(i > 2)                                  // car on ne veut pas afficher x^1
                 os << "x^" << i-1;
-        else if(i == 2) // pour la puissance de 1
+        else if(i == 2)                            // pour la puissance de 1
                 os << "x";
             first = false;  // pour changer le statut de first après le premier monome affiché
     }
-    else if(first /*&& c == 0 */&& i == 1) // polynome nul
+    else if(first && i == 1)                       // polynome nul
         os << "0";   
     
     }   
