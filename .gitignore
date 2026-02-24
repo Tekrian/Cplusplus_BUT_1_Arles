@@ -1,0 +1,12 @@
+# Fichiers objets
+*.o
+
+# Fichiers exécutables
+prog
+traceur
+demo++*
+Polynome
+Polynome1
+
+# Fichiers temporaires
+*~
