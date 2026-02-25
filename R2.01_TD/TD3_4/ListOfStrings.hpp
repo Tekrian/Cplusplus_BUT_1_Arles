@@ -17,9 +17,9 @@ class ListOfStrings{
                 ~StringNode();  //Destructeur
         };//StringNode
 
+        size_t count;      // Nombre de maillons dans la liste
         StringNode* first; // Pointeur vers le premier maillon de la liste
         StringNode* last;  // Pointeur vers le dernier maillon de la liste
-        size_t count;      // Nombre de maillons dans la liste
 
         // Méthodes privées
         void push_front(StringNode*);
