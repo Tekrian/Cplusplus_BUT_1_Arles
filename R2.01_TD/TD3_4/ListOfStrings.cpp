@@ -82,14 +82,18 @@ void ListOfStrings::pop_back(){
         StringNode* node = last;
         // for(StringNode* temp = first; temp->next != last; temp = temp-> next){}
         StringNode* previewLast = first;
-        while(previewLast->next != last)    // L'avant dernier élément a son next qui pointe last
-            previewLast = previewLast-> next;
-        previewLast->next = mullptr;    // Car se sera le dernier élt de la liste
-        last = previewLast;
-        delete node;
-         
-        
+        if(first == last){
+            first = last = nullptr;
+            delete node;
+        } else{
+            while(previewLast->next != last)    // L'avant dernier élément a son next qui pointe last
+                previewLast = previewLast-> next;
+            previewLast->next = nullptr;    // Car se sera le dernier élt de la liste
+            last = previewLast;
+            delete node;
+        }    
     }
+    count--;
 }
 
 
