@@ -37,6 +37,7 @@ int main()
         cout << "5. Multiplication" << endl; 
         cout << "6. Integration" << endl;
         cout << "7. Evaluation P(x)" << endl; 
+        cout << "8. Modifier un des coef d'un polynome"<< endl;
         cout << "0. Quitter" << endl;
         cout << endl;
         cout << "Votre choix : ";
@@ -340,6 +341,47 @@ int main()
             }
             double res = (memory[indice])->operator()(x);            
             cout << "P(" << x << ") = " << res << endl;        
+        }
+
+        else if(choice == 8){
+            int indice;
+            cout << "Saisir l'indice de l'emplacement du polynome a evaluer : ";
+            cin >> indice;
+
+            while(indice >= sizeMax || indice < 0){
+                cout << "Indice hors limites,valeur des indices entre 0 et " << sizeMax-1 << endl; 
+                cout << "Veuillez ressaisir." << endl;
+                cout << "Saisir l'indice de l'emplacement du polynome a evaluer : ";
+                cin >> indice;
+            }
+            
+            while (memory[indice] == nullptr)
+            {
+                cout << "L'emplacement " << indice << " est vide, veuillez ressaisir." << endl;
+                cout << "Saisir l'indice de l'emplacement du polynome a evaluer : ";
+                cin >> indice;
+            }            
+
+            unsigned int d;
+            double x;
+            bool recom;
+            do{
+                recom = false;
+                cout << "Dégré du monome a modifier : ";
+                cin >> d;
+                cout << "Saisir la valeur du nouveau coefficient : " ;
+                cin >> x;
+                try{
+                    memory[indice]->operator[](d) = x;
+                }
+                catch(out_of_range& e)
+                {
+                    std::cerr << "\nException : " << e.what() << endl << "Recommencez"<< endl;
+                    recom = true;
+                }
+            
+            }while(recom);
+
         }
     }
             

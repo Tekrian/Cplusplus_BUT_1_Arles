@@ -24,7 +24,7 @@ class Polynome {
         inline double operator[](const unsigned int& i)const
         {
             if(i > degre)                
-                throw std::out_of_range("Indice hors limites");
+                throw std::out_of_range("L'indice entré est supérieur à la limite");
             return coef[i];
         }
 
@@ -32,7 +32,7 @@ class Polynome {
         inline double& operator[](const unsigned int& i)
         {
             if(i > degre)                
-                throw std::out_of_range("Indice hors limites");
+                throw std::out_of_range("L'indice entré est supérieur à la limite");
             return coef[i];            
         }
         //double& operator[](const unsigned int&)const;
