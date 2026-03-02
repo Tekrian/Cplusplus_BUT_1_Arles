@@ -1,4 +1,4 @@
-w#include "ListOfStrings.hpp"
+#include "ListOfStrings.hpp"
 #include <stdexcept>
 
 /*
@@ -20,6 +20,12 @@ ListOfStrings::ListOfStrings()
 { 
 }// Constructeur par défaut de la classe ListOfStrings
 
+ListOfStrings::ListOfStrings(const ListOfStrings& src)
+    : count(src.count), first(src.first), last(src.last)
+{
+
+}//constructeur de copie de la classe ListOfStrings
+
 void ListOfStrings::push_front(StringNode* node){
     if(first == nullptr)    // Si la liste était vide, le nouveau noeud devient le premier ainsi que le dernier noeud
         last = first = node;
@@ -30,7 +36,7 @@ void ListOfStrings::push_front(StringNode* node){
     count++; //mise à jour du nombre de Maillon
 }
 
-void LisOfStrings::push_front(const std::string& str){
+void ListOfStrings::push_front(const std::string& str){
     push_front(new StringNode(str));    // Créer un nouveau noeud avec la chaîne str fournie et l'Ajouter au début de la liste
 }
 
@@ -44,7 +50,7 @@ void ListOfStrings::push_back(StringNode* node){
     count++;
 }
 
-void ListOfstrings::push_back(const std::string& str){
+void ListOfStrings::push_back(const std::string& str){
     push_back(new StringNode(str));
 }
 
@@ -55,7 +61,7 @@ const std::string& ListOfStrings::front() const {
         return first->value;
 }
 
-const std::string& LisOfStrings::back()const {
+const std::string& ListOfStrings::back()const {
     if(first == nullptr)
         throw std::out_of_range("Impossible de consulter back car la liste est vide.");
     else 
@@ -94,93 +100,57 @@ void ListOfStrings::pop_back(){
         }    
     }
     count--;
+}// pop_back()
+
+void ListOfStrings::splice(const ListOfStrings& other){
+    //Retire tous les élts de other et l'ajoute sur l'instance courante
+    
+    if(other.first == nullptr)  // Si le paramètre est une liste vide, on ne fait rien
+        return;
+    else if(first == nullptr){   // Si l'instance courante est une liste vide, other devient notre liste
+        first = other.first;
+        last = other.last;
+    } else {
+        last->next = other.first;
+        last = other.last;
+    }
+    count += other.count;   
+}// splice()
+
+void ListOfStrings::reverse(){
+    if(first == nullptr)  // Si la liste est vide, on ne fait rien
+        return;
+    else if(first == last)   // Si la liste ne contient qu'un seul élément, on ne fait rien
+        return;
+    else{
+        StringNode* previous = nullptr;
+        StringNode* current = first;
+        StringNode* next = nullptr;
+
+        while(current != nullptr){
+            next = current->next;   // Stocker le pointeur vers le noeud suivant
+            current->next = previous;  // Inverser le pointeur du noeud courant pour qu'il pointe vers le noeud précédent
+            previous = current;     // Avancer le pointeur précédent pour qu'il pointe vers le noeud courant
+            current = next;        // Avancer le pointeur courant pour qu'il pointe vers le noeud suivant
+        }
+        // Après la boucle, previous pointe vers l'ancien dernier noeud qui devient le nouveau premier noeud de la liste
+        last = first;  // L'ancien premier noeud devient le nouveau dernier noeud de la liste
+        first = previous;    // Le nouveau premier noeud de la liste est celui pointé par previous
+    }
+
+    if(first == nullptr || first == last)   // Si la liste est vide ou contient qu'un seul élément, on ne fait rien
+        return;
+    else{
+        StringNode* current = first;
+        StringNode* previous = nullptr;
+        while(current != nullptr){
+
+            previous = current;
+            current->next = nullptr;
+
+            current = current->next;
+        }
+        last = 
+        first = previous;
+    }   
 }
-
-
-
-
-
-
-
-
-
-
-
-
-// void ListOfStrings::push_front(StringNode* node)
-// {
-//     node->next = first; // Le nouveau noeud pointe vers l'ancien premier noeud 
-//     first = node;   // Le nouveau noeud devient le premier noeud de la liste
-//     if(last == nullptr) // Si la liste était vide, le nouveau noeud devient également le dernier noeud
-//         last = node;
-//     count++;
-// }
-
-// void ListOfStrings::push_front(const std::string& str)
-// {
-//     StringNode* node = new StringNode(str); // Créer un nouveau noeud avec la chaîne str fournie  
-//     push_front(node); // Ajouter le nouveau noeud au début de la liste
-// }
-
-// void ListOfStrings::push_back(StringNode* node)
-// {
-//     if(last == nullptr) // Si la liste est vide, le nouveau noeud devient à la fois le premier et le dernier noeud
-//         first = last = node;
-//     else{           
-//         last->next = node;  // Sinon, le dernier noeud actuel pointe vers le nouveau noeud 
-//         last = node;        // et le nouveau noeud devient le dernier noeud de la liste
-//     }
-//     node->next = nullptr; // Le nouveau noeud devient le dernier noeud de la liste, il ne pointe vers aucun autre noeud
-//     count++;
-// }
-
-// void ListOfStrings::push_back(const std::string& str)
-// {
-//     StringNode* node = new StringNode(str);
-//     push_back(node);
-// }
-
-// const std::string& ListOfStrings::front() const
-// {
-//     if(count == 0 /*first == nullptr*/)
-//         throw std::out_of_range("Liste vide");
-//     return first->value;
-// }
-
-// const std::string& ListOfStrings::back() const
-// {
-//     if(count == 0 /*last == nullptr*/)
-//         throw std::out_of_range("Liste vide");
-//     return last->value;
-// }
-
-// void ListOfStrings::pop_front()
-// {
-//     if(first == nullptr)
-//         throw std::out_of_range("Liste vide");
-//     StringNode* temp = first;   //Sauvegarder l'ancien premier élément
-//     first = first->next;       // Le premier elt devient le suivant de l'ancien premier elt
-//     delete temp;               //On supprime l'ancien premier élément
-
-//     // Cas ou c'était un elt dans la liste, donc 0 après suppression du first
-//     if(count == 0)
-//         first = last = nullptr;
-// }
-
-// void ListOfStrings::pop_back()
-// {
-//     if(last == nullptr)
-//         throw std::out_of_range("Liste vide");
-//     if(first == last){ //Si la liste contient qu'un elt
-//         delete first;
-//     first = last = nullptr;
-//     }else{
-//         StringNode* current = first;
-//         while(current->next != last)
-//             current = current->next;
-//         delete last;
-//         last = current;
-//         last->next = nullptr; 
-
-//     }    
-// }

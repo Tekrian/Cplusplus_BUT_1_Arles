@@ -38,6 +38,8 @@ class ListOfStrings{
         const std::string& back() const;
         void pop_front();
         void pop_back();
+        void splice(const ListOfStrings&);
+        void reverse();
 
 
 };
