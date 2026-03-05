@@ -24,7 +24,7 @@ class ListOfStrings{
         // Méthodes privées
         void push_front(StringNode*);
         void push_back(StringNode*);
-
+        void insert_sorted(StringNode*);
                    
     public :
         ListOfStrings(); // Constructeur par défaut de la classe ListOfStrings
@@ -40,6 +40,8 @@ class ListOfStrings{
         void pop_back();
         void splice(const ListOfStrings&);
         void reverse();
+        void insert_sorted(std::string&);
+        void sort();
 
 
 };

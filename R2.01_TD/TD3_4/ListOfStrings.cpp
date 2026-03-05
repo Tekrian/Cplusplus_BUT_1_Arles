@@ -118,39 +118,57 @@ void ListOfStrings::splice(const ListOfStrings& other){
 }// splice()
 
 void ListOfStrings::reverse(){
-    if(first == nullptr)  // Si la liste est vide, on ne fait rien
-        return;
-    else if(first == last)   // Si la liste ne contient qu'un seul élément, on ne fait rien
-        return;
-    else{
-        StringNode* previous = nullptr;
-        StringNode* current = first;
-        StringNode* next = nullptr;
-
-        while(current != nullptr){
-            next = current->next;   // Stocker le pointeur vers le noeud suivant
-            current->next = previous;  // Inverser le pointeur du noeud courant pour qu'il pointe vers le noeud précédent
-            previous = current;     // Avancer le pointeur précédent pour qu'il pointe vers le noeud courant
-            current = next;        // Avancer le pointeur courant pour qu'il pointe vers le noeud suivant
-        }
-        // Après la boucle, previous pointe vers l'ancien dernier noeud qui devient le nouveau premier noeud de la liste
-        last = first;  // L'ancien premier noeud devient le nouveau dernier noeud de la liste
-        first = previous;    // Le nouveau premier noeud de la liste est celui pointé par previous
-    }
+    //fonction qui renverse l'ordre des éléments de la liste courante
 
     if(first == nullptr || first == last)   // Si la liste est vide ou contient qu'un seul élément, on ne fait rien
         return;
     else{
-        StringNode* current = first;
-        StringNode* previous = nullptr;
+        StringNode* current = first;    // le poiteur de l'élément courant en faisant le parcous de la liste
+
+        StringNode* previous = nullptr; // le pointeur qui va nous permettre de récuper le précédent élément 
+                                        //pour changer le sens du next de l'élément suivant
+        
+        StringNode* nextSn;            // le pointeur qui va pointer sur le prochain élément pour permettre l'incrémentation dans la boucle
+        
         while(current != nullptr){
-
+            nextSn = current->next;
+            current->next = previous;
             previous = current;
-            current->next = nullptr;
-
-            current = current->next;
+            current = nextSn;
         }
-        last = 
-        first = previous;
+        last = first;   // l'ancien premier élément devient le dernier de la liste    
+        first = previous;  
     }   
+}
+
+void ListOfStrings::insert_sorted(StringNode* node){
+    //Ajoute l'élément à la liste suivant l'ordre alphabétique
+    if(first == nullptr)
+        last = first = node;
+    else if(first == last){
+        if(first->value > node->value)            
+            push_back(node);
+        else
+            push_front(node);
+    } else{
+        for(StringNode* current = first; current != nullptr; current = current->next){  
+            StringNode* nextSn = current->next;
+            if(current->value < node->value && node->value < nextSn->value){
+                current->next = node;
+                node->next = nextSn;    
+            }    
+        }
+    }
+}
+
+void ListOfStrings::insert_sorted(std::string& str){
+    insert_sorted(new StringNode(str));
+}
+
+void ListOfStrings::sort(){
+    StringNode* firstTemp = first;
+    StringNode* lastTemp = last;
+    first = last = nullptr;
+    for(StringNode* current = firstTemp; current != nullptr; current = current->next)
+        insert_sorted(current);
 }
