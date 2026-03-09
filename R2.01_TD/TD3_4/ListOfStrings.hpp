@@ -39,9 +39,9 @@ class ListOfStrings{
         const std::string& back() const;
         void pop_front();
         void pop_back();
-        void splice(const ListOfStrings&);
+        void splice(ListOfStrings&);
         void reverse();
-        void insert_sorted(std::string&);
+        void insert_sorted(const std::string&);
         void sort();
         inline size_t size() const {return count;};
         void clear();
