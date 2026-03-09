@@ -13,5 +13,5 @@ test0.o : test0.cpp ListOfStrings.hpp
 ListOfStrings.o: ListOfStrings.cpp ListOfStrings.hpp
 	$(CXX) $(CXXFLAGS) -c $<
 clean:
-	rm -f *.o test test0.cpp
+	rm -f *.o test
 .PHONY: clean all
