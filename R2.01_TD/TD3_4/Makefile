@@ -7,3 +7,6 @@ LIBS=-lX11 -lXext
 
 ListOfStrings.o: ListOfStrings.cpp ListOfStrings.hpp
 	$(CXX) $(CXXFLAGS) -c $<
+clean:
+	rm -f *.o
+.PHONY: clean

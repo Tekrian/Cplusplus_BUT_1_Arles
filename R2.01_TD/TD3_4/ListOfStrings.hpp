@@ -2,6 +2,7 @@
 #define LIST_OF_STRINGS_HPP
 
 #include <string>
+#include <iostream>
 
 class ListOfStrings{
 
@@ -12,7 +13,7 @@ class ListOfStrings{
                 std::string value;
                 StringNode* next;
 
-                StringNode(const std::string& _value, const StringNode* next = nullptr);    // Constructeur
+                StringNode(const std::string& _value = "", StringNode* _next = nullptr);    // Constructeur
                 StringNode(const StringNode&);  //  Constructeur de copie
                 ~StringNode();  //Destructeur
         };//StringNode
@@ -42,7 +43,9 @@ class ListOfStrings{
         void reverse();
         void insert_sorted(std::string&);
         void sort();
-
+        inline size_t size() const {return count;};
+        void clear();
+        friend std::ostream& operator<<(std::ostream&, const ListOfStrings&);
 
 };
 

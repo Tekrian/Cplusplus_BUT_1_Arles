@@ -1,19 +1,20 @@
 #include "ListOfStrings.hpp"
 #include <stdexcept>
 
-/*
-ListOfStrings::StringNode::StringNode(const std::string& _value, const StringNode* _next)
+
+ListOfStrings::StringNode::StringNode(const std::string& _value, StringNode* _next)
     :   value(_value), next(_next)
 {
 
 }// Constructeur de la classe interne StringNode
 
 ListOfStrings::StringNode::StringNode(const StringNode& other)
-    : value(other.value), next(other.next)
+    : StringNode(other.value, other.next)
 {
 
 }//Constructeur par copie de la classe StringNOde
-*/
+
+ListOfStrings::StringNode::~StringNode(){}  //destructeur de la classe interne StringNode
 
 ListOfStrings::ListOfStrings()
     : count(0), first(nullptr), last(nullptr)
@@ -21,11 +22,16 @@ ListOfStrings::ListOfStrings()
 }// Constructeur par défaut de la classe ListOfStrings
 
 ListOfStrings::ListOfStrings(const ListOfStrings& src)
-    : count(src.count), first(src.first), last(src.last)
+    : count(0), first(nullptr), last(nullptr)
 {
-
+    for(StringNode* current = src.first; current!= nullptr; current = current->next)
+        push_back(current->value);
 }//constructeur de copie de la classe ListOfStrings
 
+ListOfStrings::~ListOfStrings(){
+    while(first != nullptr)
+        pop_front();
+}//destructeur de la classe ListOfStrings
 void ListOfStrings::push_front(StringNode* node){
     if(first == nullptr)    // Si la liste était vide, le nouveau noeud devient le premier ainsi que le dernier noeud
         last = first = node;
@@ -38,7 +44,7 @@ void ListOfStrings::push_front(StringNode* node){
 
 void ListOfStrings::push_front(const std::string& str){
     push_front(new StringNode(str));    // Créer un nouveau noeud avec la chaîne str fournie et l'Ajouter au début de la liste
-}
+}//push_front()
 
 void ListOfStrings::push_back(StringNode* node){
     if(first == nullptr)    // Si la liste est vide, le nouveau noeud devient à la fois le premier et le dernier noeud
@@ -52,21 +58,21 @@ void ListOfStrings::push_back(StringNode* node){
 
 void ListOfStrings::push_back(const std::string& str){
     push_back(new StringNode(str));
-}
+}//push_back()
 
 const std::string& ListOfStrings::front() const {
     if(first == nullptr)
         throw std::out_of_range("Impossible de consulter front car la liste est vide.");
     else 
         return first->value;
-}
+}//front()
 
 const std::string& ListOfStrings::back()const {
     if(first == nullptr)
         throw std::out_of_range("Impossible de consulter back car la liste est vide.");
     else 
         return last->value;
-}
+}//back()
 
 void ListOfStrings::pop_front(){
     if (first == nullptr)
@@ -75,18 +81,17 @@ void ListOfStrings::pop_front(){
         StringNode* node = first;
         first = node->next;
         delete node;
-        if(first == last)
+        if(first == nullptr)    // Cas d'un élément
             last = first;   // = nullptr
     }
     count--;
-}
+}//pop_front()
 
 void ListOfStrings::pop_back(){
     if (first == nullptr)
         throw std::out_of_range("Impossible de consulter pop_back car la liste est vide");
     else{
         StringNode* node = last;
-        // for(StringNode* temp = first; temp->next != last; temp = temp-> next){}
         StringNode* previewLast = first;
         if(first == last){
             first = last = nullptr;
@@ -98,8 +103,8 @@ void ListOfStrings::pop_back(){
             last = previewLast;
             delete node;
         }    
+        count--;
     }
-    count--;
 }// pop_back()
 
 void ListOfStrings::splice(const ListOfStrings& other){
@@ -146,29 +151,46 @@ void ListOfStrings::insert_sorted(StringNode* node){
     if(first == nullptr)
         last = first = node;
     else if(first == last){
-        if(first->value > node->value)            
+        if(first->value < node->value)            
             push_back(node);
         else
             push_front(node);
     } else{
         for(StringNode* current = first; current != nullptr; current = current->next){  
             StringNode* nextSn = current->next;
-            if(current->value < node->value && node->value < nextSn->value){
+            if(current->value < node->value && node->value < nextSn->value){ // le node doit être comprise entre l'élément courrant et son prochain pour être inserer
                 current->next = node;
                 node->next = nextSn;    
             }    
         }
     }
+    count++;
 }
 
 void ListOfStrings::insert_sorted(std::string& str){
     insert_sorted(new StringNode(str));
-}
+}//insert_sorted()
 
 void ListOfStrings::sort(){
     StringNode* firstTemp = first;
-    StringNode* lastTemp = last;
     first = last = nullptr;
-    for(StringNode* current = firstTemp; current != nullptr; current = current->next)
-        insert_sorted(current);
+    count = 0;
+    while (firstTemp != nullptr)
+    {
+        StringNode* nextTemp = firstTemp->next; // pour l'incrémentation après car le next de firstTemp changera avec insert_sorted
+        firstTemp->next = nullptr; // on doit mettre le next à null avant l'insertion
+        insert_sorted(firstTemp);
+        firstTemp = nextTemp;
+    }
+}//sort()
+
+void ListOfStrings::clear(){
+    while(first != nullptr){
+        pop_front();
+        first = first->next;
+    }
+}//clear()
+
+std::ostream& operator<<(std::ostream& os, const ListOfStrings& List){
+    return os;
 }
