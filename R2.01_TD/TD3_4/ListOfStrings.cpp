@@ -29,7 +29,7 @@ ListOfStrings::ListOfStrings(const ListOfStrings& src)
 }//constructeur de copie de la classe ListOfStrings
 
 ListOfStrings::~ListOfStrings(){
-    while(first != nullptr)
+    while(first != nullptr)         //mettre de coté l'ad du mailllont suiv avant de supprimé le maillon 
         pop_front();
 }//destructeur de la classe ListOfStrings
 void ListOfStrings::push_front(StringNode* node){

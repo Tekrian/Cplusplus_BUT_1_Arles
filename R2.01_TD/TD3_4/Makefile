@@ -12,6 +12,9 @@ test0.o : test0.cpp ListOfStrings.hpp
 	$(CXX) $(CXXFLAGS) -c $<
 ListOfStrings.o: ListOfStrings.cpp ListOfStrings.hpp
 	$(CXX) $(CXXFLAGS) -c $<
+
+valgrind :
+	valgrind --leak-check=yes test
 clean:
 	rm -f *.o test
 .PHONY: clean all
